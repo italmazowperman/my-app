@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import './App.css';
 
 const App = () => {
+  const API_BASE_URL = 'https://my-app-backend-service.onrender.com';
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [tasks, setTasks] = useState({ history: [], current: [], future: [] });
@@ -50,7 +51,7 @@ const App = () => {
   // Загрузка данных
   const loadOrders = useCallback(() => {
     setIsLoading(true);
-    fetch('https://my-app-backend-service.onrender.com/orders')
+    fetch(`${API_BASE_URL}/orders`)
       .then(res => {
         if (!res.ok) throw new Error('Ошибка загрузки заказов');
         return res.json();
@@ -71,7 +72,7 @@ const App = () => {
   const loadTasks = useCallback(() => {
     if (!selectedOrder) return;
     setIsLoading(true);
-    fetch(`https://my-app-backend-service.onrender.com/orders/${selectedOrder}/tasks`)
+    fetch(`${API_BASE_URL}/orders/${selectedOrder}/tasks`)
       .then(res => {
         if (!res.ok) throw new Error('Ошибка загрузки задач');
         return res.json();
@@ -123,7 +124,7 @@ const App = () => {
       return;
     }
 
-    fetch('http://localhost:3001/orders', {
+    fetch(`${API_BASE_URL}/orders`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newOrder)
@@ -160,7 +161,7 @@ const App = () => {
   const updateOrder = () => {
     if (!currentOrder) return;
 
-    fetch(`http://localhost:3001/orders/${selectedOrder}`, {
+    fetch(`${API_BASE_URL}/orders/${selectedOrder}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(currentOrder)
@@ -190,7 +191,7 @@ const App = () => {
       return;
     }
 
-    fetch(`http://localhost:3001/orders/${selectedOrder}/tasks`, {
+    fetch(`${API_BASE_URL}/orders/${selectedOrder}/tasks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newTask)
@@ -208,7 +209,7 @@ const App = () => {
 
   // Изменение статуса задачи
   const changeTaskStatus = (taskId, newType) => {
-    fetch(`http://localhost:3001/tasks/${taskId}`, {
+    fetch(`${API_BASE_URL}/tasks/${taskId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: newType })
@@ -225,7 +226,7 @@ const App = () => {
   const updateOrderStatus = (status) => {
     if (!window.confirm(`Изменить статус заказа на "${status}"?`)) return;
     
-    fetch(`http://localhost:3001/orders/${selectedOrder}/status`, {
+    fetch(`${API_BASE_URL}/orders/${selectedOrder}/status`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
