@@ -50,7 +50,7 @@ const App = () => {
   // Загрузка данных
   const loadOrders = useCallback(() => {
     setIsLoading(true);
-    fetch('https://my-backend-j6nq.onrender.com/orders')
+    fetch('https://my-app-backend-service.onrender.com/orders')
       .then(res => {
         if (!res.ok) throw new Error('Ошибка загрузки заказов');
         return res.json();
@@ -71,7 +71,7 @@ const App = () => {
   const loadTasks = useCallback(() => {
     if (!selectedOrder) return;
     setIsLoading(true);
-    fetch(`https://my-backend-j6nq.onrender.com/orders/${selectedOrder}/tasks`)
+    fetch(`https://my-app-backend-service.onrender.com/orders/${selectedOrder}/tasks`)
       .then(res => {
         if (!res.ok) throw new Error('Ошибка загрузки задач');
         return res.json();
